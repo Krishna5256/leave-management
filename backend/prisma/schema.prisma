@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum LeaveType {
+  ANNUAL
+  SICK
+  CASUAL
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Employee {
+  id                 Int            @id @default(autoincrement())
+  name               String
+  email              String         @unique
+  department         String
+  annualLeaveBalance Int            @default(20)
+  sickLeaveBalance   Int            @default(10)
+  casualLeaveBalance Int            @default(10)
+  leaveRequests      LeaveRequest[]
+  createdAt          DateTime       @default(now())
+}
+
+model LeaveRequest {
+  id         Int         @id @default(autoincrement())
+  employeeId Int
+  fromDate   DateTime
+  toDate     DateTime
+  leaveType  LeaveType
+  reason     String
+  days       Int
+  status     LeaveStatus @default(PENDING)
+  createdAt  DateTime    @default(now())
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
