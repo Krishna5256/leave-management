@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://leave-management-if13.onrender.com";
 
 type Employee = {
   id: number;
